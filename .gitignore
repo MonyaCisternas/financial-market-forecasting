@@ -10,5 +10,7 @@ venv/
 
 data/raw_market_data.csv
 data/processed_data.csv
+data/feature_engineerd.csv
+data/regime_data.csv
 
 
