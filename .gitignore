@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+venv/
+
+.DS_Store
+
+data/raw_market_data.csv
+data/processed_data.csv
+
+
