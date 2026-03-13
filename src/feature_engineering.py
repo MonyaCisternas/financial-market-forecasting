@@ -9,15 +9,19 @@ def load_data():
 
 def calculate_returns(df):
     df["Log_Return"] = df.groupby("Asset")["Close"].transform(lambda x: np.log(x / x.shift(1)))
+    df["Return_1d"] = df.groupby("Asset")["Log_Return"].shift(1)
+    df["Return_5d"] = df.groupby("Asset")["Log_Return"].shift(5)
     return df
 
 def calculate_volatility(df, window = 30):
     df["Volatility"] = df.groupby("Asset")["Log_Return"].transform(lambda x: x.rolling(window).std())
+    df["Volatility_60"] = df.groupby("Asset")["Log_Return"].transform(lambda x: x.rolling(60).std())
     return df
 
 def moving_averages(df):
     df["MA_50"] = df.groupby("Asset")["Close"].transform(lambda x: x.rolling(50).mean())
     df["MA_200"] = df.groupby("Asset")["Close"].transform(lambda x: x.rolling(200).mean())
+    df["MA_ratio"] = df["MA_50"] / df["MA_200"]
     return df
 
 def momentum(df):
