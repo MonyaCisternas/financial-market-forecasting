@@ -1,1 +1,6 @@
 hmmlearn
+xgboost
+pandas
+joblib
+os
+sklearn
