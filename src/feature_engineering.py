@@ -11,11 +11,13 @@ def calculate_returns(df):
     df["Log_Return"] = df.groupby("Asset")["Close"].transform(lambda x: np.log(x / x.shift(1)))
     df["Return_1d"] = df.groupby("Asset")["Log_Return"].shift(1)
     df["Return_5d"] = df.groupby("Asset")["Log_Return"].shift(5)
+    df["Return_Z"] = df.groupby("Asset")["Log_Return"].transform(lambda x: (x - x.mean()) / x.std())
     return df
 
 def calculate_volatility(df, window = 30):
     df["Volatility"] = df.groupby("Asset")["Log_Return"].transform(lambda x: x.rolling(window).std())
     df["Volatility_60"] = df.groupby("Asset")["Log_Return"].transform(lambda x: x.rolling(60).std())
+    df["Volatility_Ratio"] = df["Volatility"] / df["Volatility_60"]
     return df
 
 def moving_averages(df):
@@ -35,11 +37,20 @@ def missing_values(df):
     df = df.dropna(subset = ["Log_Return", "Volatility"])
     return df
 
+def relative_market_return(df):
+    market = df[df["Asset"] == "Top40"][["Date", "Log_Return"]]
+    market = market.rename(columns = {"Log_Return": "Market_Return"})
+    df = df.merge(market, on = "Date", how = "left")
+    df["Relative_Return"] = df["Log_Return"] - df["Market_Return"]
+    return df
+
 if __name__ == "__main__":
     print("Loading raw data...")
     df = load_data()
     print("Calculating returns...")
     df = calculate_returns(df)
+    print("Calculating relative market return...")
+    df = relative_market_return(df)
     print("Calculating volatility...")
     df = calculate_volatility(df)
     print("Calculating moving averages...")
