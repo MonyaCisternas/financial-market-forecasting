@@ -44,6 +44,10 @@ def relative_market_return(df):
     df["Relative_Return"] = df["Log_Return"] - df["Market_Return"]
     return df
 
+def rolling_sharpe(df):
+    df["Rolling_Sharpe"] = df.groupby("Asset")["Log_Return"].transform(lambda x: x.rolling(30).mean() / x.rolling(30).std())
+    return df
+
 if __name__ == "__main__":
     print("Loading raw data...")
     df = load_data()
@@ -57,6 +61,8 @@ if __name__ == "__main__":
     df = moving_averages(df)
     print("Calculating momentum...")
     df = momentum(df)
+    print("Calculating rolling Sharpe...")
+    df = rolling_sharpe(df)
     print("Dropping missing values...")
     df = missing_values(df)
     print("Saving engineerd dataset...")

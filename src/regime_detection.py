@@ -3,7 +3,7 @@ from hmmlearn.hmm import GaussianHMM
 from sklearn.preprocessing import StandardScaler
 
 print("Loading engineered dataset...")
-data = pd.read_csv("data/feature_engineered_data.csv")
+data = pd.read_csv("data/statistical_features.csv")
 
 macro_assets = ["Top40", "Gold", "USDZAR"]
 macro_data = data[data["Asset"].isin(macro_assets)].copy()
