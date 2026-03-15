@@ -2,5 +2,10 @@ hmmlearn
 xgboost
 pandas
 joblib
-os
-sklearn
+scikit-learn
+numpy
+yfinance
+statsmodels
+arch
+streamlit
+plotly
